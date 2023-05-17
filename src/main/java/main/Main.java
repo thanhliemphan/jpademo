@@ -1,2 +1,88 @@
-package main;public class Main {
+package main;
+
+import config.SpringConfig;
+import entity.BookEntity;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import repository.BookRepository;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+public class Main {
+    static ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+    static BookRepository bookRepository = (BookRepository) context.getBean("bookRepository");
+
+    public static void main(String[] args) {
+//        createNewBook();
+//        readBook();
+//        readBookById(20);
+//        updateBookById(5);
+//        deleteBookById(3);
+        List<BookEntity> bookEntityList = bookRepository.findByAuthor("John");
+        if (bookEntityList.size()!=0) {
+            System.out.println("Found " + bookEntityList.size() + " book(s) of John");
+            System.out.println("They are:");
+            for (BookEntity book:bookEntityList) {
+                System.out.println(book.toString());
+            }
+        }
+    }
+    private static void createNewBook(){
+        BookEntity bookEntity = new BookEntity();
+        bookEntity.setName("Java A-Z");
+        bookEntity.setAuthor("John");
+        bookEntity.setCategory("IT books");
+        bookEntity.setIsbn("ISIBF55555");
+        bookEntity.setNumberOfPage(12345);
+        bookEntity.setPrice(30.5);
+        bookEntity.setPublishDate(LocalDate.parse("2018-08-16"));
+        BookEntity result = bookRepository.save(bookEntity);
+        if (result != null){
+            System.out.println("A new book saved successfully,book ID = "+bookEntity.getId());
+        }
+    }
+    private static void readBook(){
+        List<BookEntity> bookList = (List<BookEntity>) bookRepository.findAll();
+        System.out.println("Found " + bookList.size() + " books in the table book");
+        System.out.println("They are: ");
+        for (BookEntity book:bookList) {
+            System.out.println(book.toString());
+        }
+    }
+    private static void readBookById(int bookID){
+        if (bookRepository.existsById(bookID) == true){
+            BookEntity bookEntity = bookRepository.findById(bookID).get();
+            System.out.println("Found a book with book ID = " + bookID);
+            System.out.println(bookEntity.toString());
+        } else {
+            System.out.println("Not found any book with book ID = " + bookID);
+        }
+    }
+    private static void updateBookById(int bookID){
+        if (bookRepository.existsById(bookID) == true){
+            BookEntity bookEntity = bookRepository.findById(bookID).get();
+            System.out.println("Book data before updating");
+            System.out.println(bookEntity.toString());
+
+            bookEntity.setAuthor("Phat");
+            bookEntity.setNumberOfPage(99);
+            bookEntity.setPrice(200);
+            bookRepository.save(bookEntity);
+
+            System.out.println("Book data after updating");
+            System.out.println(bookEntity.toString());
+        } else {
+            System.out.println("Invalid any book with book ID = " + bookID);
+        }
+    }
+    private static void deleteBookById(int bookID){
+        if (bookRepository.existsById(bookID) == true){
+            bookRepository.deleteById(bookID);
+            System.out.println("book id = " + bookID + " has been deleted");
+        } else {
+            System.out.println("Invalid any book with book ID = " + bookID);
+        }
+    }
 }
