@@ -1,8 +1,6 @@
 package entity;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "book")
@@ -18,21 +16,29 @@ public class BookEntity {
     @Column (name = "author")
     private String author;
 
-    @Column (name = "category")
-    private String category;
+//    @Column (name = "category")
+//    private String category;
 
-    @Column (name = "isbn")
-    private String isbn;
+//    @Column (name = "isbn")
+//    private String isbn;
+//
+//    @Column (name = "price")
+//    private double price;
+//
+//    @Column (name = "numberPage")
+//    private int numberOfPage;
+//
+//    @Column (name = "publishDate")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    private LocalDate publishDate;
 
-    @Column (name = "price")
-    private double price;
+    @ManyToOne
+    @JoinColumn(name= "categoryId")
+    private CategoryEntity category;
 
-    @Column (name = "numberPage")
-    private int numberOfPage;
-
-    @Column (name = "publishDate")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate publishDate;
+    @OneToOne(cascade = {CascadeType.ALL})
+    @PrimaryKeyJoinColumn
+    private BookDetailsEntity bookDetails;
 
     public  BookEntity(){
     }
@@ -42,11 +48,23 @@ public class BookEntity {
                 "id=" + id +
                 ",name='" + name + '\'' +
                 ",author='" + author + '\'' +
-                ",category='" + category + '\'' +
-                ",isbn='" + isbn + '\'' +
-                ",price=" + price +
-                ",numberOfPage=" + numberOfPage +
-                ",publishDate=" + publishDate + '}';
+                ",category=" + category.getName() + '}';
+    }
+
+    public CategoryEntity getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryEntity category) {
+        this.category = category;
+    }
+
+    public BookDetailsEntity getBookDetails() {
+        return bookDetails;
+    }
+
+    public void setBookDetails(BookDetailsEntity bookDetails) {
+        this.bookDetails = bookDetails;
     }
 
     public int getId() {
@@ -73,43 +91,43 @@ public class BookEntity {
         this.author = author;
     }
 
-    public String getCategory() {
-        return category;
-    }
+//    public String getCategory() {
+//        return category;
+//    }
+//
+//    public void setCategory(String category) {
+//        this.category = category;
+//    }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getNumberPage() {
-        return numberOfPage;
-    }
-
-    public void setNumberOfPage(int numberPage) {
-        this.numberOfPage = numberPage;
-    }
-
-    public LocalDate getPublishDate() {
-        return publishDate;
-    }
-
-    public void setPublishDate(LocalDate publishDate) {
-        this.publishDate = publishDate;
-    }
+//    public String getIsbn() {
+//        return isbn;
+//    }
+//
+//    public void setIsbn(String isbn) {
+//        this.isbn = isbn;
+//    }
+//
+//    public double getPrice() {
+//        return price;
+//    }
+//
+//    public void setPrice(double price) {
+//        this.price = price;
+//    }
+//
+//    public int getNumberPage() {
+//        return numberOfPage;
+//    }
+//
+//    public void setNumberOfPage(int numberPage) {
+//        this.numberOfPage = numberPage;
+//    }
+//
+//    public LocalDate getPublishDate() {
+//        return publishDate;
+//    }
+//
+//    public void setPublishDate(LocalDate publishDate) {
+//        this.publishDate = publishDate;
+//    }
 }
