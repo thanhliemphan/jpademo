@@ -20,7 +20,7 @@ public class Main {
     public static void main(String[] args) {
 //        createNewBook();
 //        readAllBook();
-//        readBookById(20);
+        readBookById(20);
 //        updateBookById(5);
 //        deleteBookById(3);
 //        List<BookEntity> bookEntityList = bookRepository.findByAuthor("John");
@@ -31,7 +31,7 @@ public class Main {
 //                System.out.println(book.toString());
 //            }
 //        }
-        createNewBookEntryWithNewCategory();
+//        createNewBookEntryWithNewCategory();
 //        createNewBookEntry();
     }
 
